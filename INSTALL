@@ -1,0 +1,6 @@
+$ cd ${BUILD_DIR}
+$ cmake ${SOURCE_DIR} -DCMAKE_INSTALL_PREFIX=${PREFIX}
+$ make
+$ make test
+$ make install
+
