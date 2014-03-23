@@ -41,6 +41,9 @@ namespace rapidmp {
   struct overflow : public std::overflow_error {
     overflow() : std::overflow_error( "rapidmp: overflow" ) {}
   };
+  struct not_supported : public std::runtime_error {
+    not_supported() : std::runtime_error( "rapidmp: not_supported" ) {}
+  };
 }
 
 #endif

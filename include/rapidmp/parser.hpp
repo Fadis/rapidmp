@@ -43,11 +43,10 @@ namespace rapidmp {
     for( size_t index = 0u; index != size; ++index ) {
       if( iter == end )
         throw unexpected_end();
-      const typename object_type< Iterator >::type key( parse_object( iter, end ) );
+      typename object_type< Iterator >::type &&key( std::move( parse_object( iter, end ) ) );
       if( iter == end )
         throw unexpected_end();
-      const typename object_type< Iterator >::type value( parse_object( iter, end ) );
-      result.emplace_back( std::move( key ), std::move( value ) );
+      result.emplace_back( key, std::move( parse_object( iter, end ) ) );
     }
     return std::move( result );
   }
@@ -61,7 +60,7 @@ namespace rapidmp {
       if( iter == end )
         throw unexpected_end();
       result.emplace_back(
-        parse_object( iter, end )
+        std::move( parse_object( iter, end ) )
       );
     }
     return std::move( result );
@@ -129,7 +128,8 @@ namespace rapidmp {
   ) {
     namespace qi = boost::spirit::qi;
     typename boost::uint_t< Length::value * 8u >::exact result;
-    if( !qi::parse( iter, end, get_qi_rule_for_the_integer< Length >(), result ) )
+    static const auto rule = get_qi_rule_for_the_integer< Length >();
+    if( !qi::parse( iter, end, rule, result ) )
       throw unexpected_end();
     return result;
   }
@@ -232,7 +232,7 @@ namespace rapidmp {
       if( iter == end )
         throw unexpected_end();
       result.emplace_back(
-        parse_object( iter, end )
+        std::move( parse_object( iter, end ) )
       );
     }
     return std::move( result );
@@ -246,11 +246,10 @@ namespace rapidmp {
     for( size_t index = 0u; index != size; ++index ) {
       if( iter == end )
         throw unexpected_end();
-      const typename object_type< Iterator >::type key( parse_object( iter, end ) );
+      typename object_type< Iterator >::type &&key( std::move( parse_object( iter, end ) ) );
       if( iter == end )
         throw unexpected_end();
-      const typename object_type< Iterator >::type value( parse_object( iter, end ) );
-      result.emplace_back( std::move( key ), std::move( value ) );
+      result.emplace_back( key, std::move( parse_object( iter, end ) ) );
     }
     return std::move( result );
   }
@@ -266,11 +265,11 @@ namespace rapidmp {
     }
     else if( head < 0xc0u ) {
       if( head < 0x90u )
-        return parse_short_struct( head, iter, end );
+        return std::move( parse_short_struct( head, iter, end ) );
       else if( head < 0xa0u )
-        return parse_short_array( head, iter, end );
+        return std::move( parse_short_array( head, iter, end ) );
       else
-        return parse_short_string( head, iter, end );
+        return std::move( parse_short_string( head, iter, end ) );
     }
     else if( head < 0xe0u ) {
       switch( head ) {
@@ -281,17 +280,17 @@ namespace rapidmp {
         case 0xc3u:
           return true;
         case 0xc4u:
-          return parse_bin< boost::mpl::size_t< 1 >, Iterator >( iter, end );
+          return std::move( parse_bin< boost::mpl::size_t< 1 >, Iterator >( iter, end ) );
         case 0xc5u:
-          return parse_bin< boost::mpl::size_t< 2 >, Iterator >( iter, end );
+          return std::move( parse_bin< boost::mpl::size_t< 2 >, Iterator >( iter, end ) );
         case 0xc6u:
-          return parse_bin< boost::mpl::size_t< 4 >, Iterator >( iter, end );
+          return std::move( parse_bin< boost::mpl::size_t< 4 >, Iterator >( iter, end ) );
         case 0xc7u:
-          return parse_ext< boost::mpl::size_t< 1 >, Iterator >( iter, end );
+          return std::move( parse_ext< boost::mpl::size_t< 1 >, Iterator >( iter, end ) );
         case 0xc8u:
-          return parse_ext< boost::mpl::size_t< 2 >, Iterator >( iter, end );
+          return std::move( parse_ext< boost::mpl::size_t< 2 >, Iterator >( iter, end ) );
         case 0xc9u:
-          return parse_ext< boost::mpl::size_t< 4 >, Iterator >( iter, end );
+          return std::move( parse_ext< boost::mpl::size_t< 4 >, Iterator >( iter, end ) );
         case 0xcau:
           return parse_float32< Iterator >( iter, end );
         case 0xcbu:
@@ -323,19 +322,19 @@ namespace rapidmp {
         case 0xd8u:
           return parse_fixext< boost::mpl::size_t< 16 >, Iterator >( iter, end );
         case 0xd9u:
-          return parse_str< boost::mpl::size_t< 1 >, Iterator >( iter, end );
+          return std::move( parse_str< boost::mpl::size_t< 1 >, Iterator >( iter, end ) );
         case 0xdau:
-          return parse_str< boost::mpl::size_t< 2 >, Iterator >( iter, end );
+          return std::move( parse_str< boost::mpl::size_t< 2 >, Iterator >( iter, end ) );
         case 0xdbu:
-          return parse_str< boost::mpl::size_t< 4 >, Iterator >( iter, end );
+          return std::move( parse_str< boost::mpl::size_t< 4 >, Iterator >( iter, end ) );
         case 0xdcu:
-          return parse_array< boost::mpl::size_t< 2 >, Iterator >( iter, end );
+          return std::move( parse_array< boost::mpl::size_t< 2 >, Iterator >( iter, end ) );
         case 0xddu:
-          return parse_array< boost::mpl::size_t< 4 >, Iterator >( iter, end );
+          return std::move( parse_array< boost::mpl::size_t< 4 >, Iterator >( iter, end ) );
         case 0xdeu:
-          return parse_struct< boost::mpl::size_t< 2 >, Iterator >( iter, end );
+          return std::move( parse_struct< boost::mpl::size_t< 2 >, Iterator >( iter, end ) );
         case 0xdfu:
-          return parse_struct< boost::mpl::size_t< 4 >, Iterator >( iter, end );
+          return std::move( parse_struct< boost::mpl::size_t< 4 >, Iterator >( iter, end ) );
         default:
           throw invalid_object();
       };
