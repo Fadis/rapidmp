@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef RAPIDMP_PARSER_HPP
-#define RAPIDMP_PARSER_HPP
+#ifndef RAPIDMP_GENERATOR_HPP
+#define RAPIDMP_GENERATOR_HPP
 
 #include <cstdint>
 #include <algorithm>
