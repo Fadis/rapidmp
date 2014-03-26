@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 #include <rapidmp/generator.hpp>
 
-BOOST_AUTO_TEST_CASE( short_string ) {
+BOOST_AUTO_TEST_CASE( v10_short_string ) {
   std::string data( "Hello, World!" );
   std::vector< char > vdata( data.begin(), data.end() );
   rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::string< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
@@ -38,25 +38,12 @@ BOOST_AUTO_TEST_CASE( short_string ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( '\xa0' + data.size() ) << *karma::char_, data );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_0 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
-BOOST_AUTO_TEST_CASE( string8 ) {
+BOOST_AUTO_TEST_CASE( v10_string16 ) {
   std::vector< char > vdata( 200 );
-  std::fill( vdata.begin(), vdata.end(), 'a' );
-  rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::string< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
-  std::vector< char > expected;
-  namespace karma = boost::spirit::karma;
-  karma::generate( std::back_inserter( expected ), karma::byte_( '\xd9' ) << karma::byte_( vdata.size() ) << *karma::char_, vdata );
-  std::vector< char > dest;
-  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
-  BOOST_CHECK( boost::equal( expected, dest ) );
-}
-
-BOOST_AUTO_TEST_CASE( string16 ) {
-  std::vector< char > vdata( 30000 );
   std::fill( vdata.begin(), vdata.end(), 'a' );
   rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::string< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
   std::vector< char > expected;
@@ -64,11 +51,11 @@ BOOST_AUTO_TEST_CASE( string16 ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( '\xda' ) << karma::big_word( vdata.size() ) << *karma::char_, vdata );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_0 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
-BOOST_AUTO_TEST_CASE( string32 ) {
+BOOST_AUTO_TEST_CASE( v10_string32 ) {
   std::vector< char > vdata( 65537 );
   std::fill( vdata.begin(), vdata.end(), 'a' );
   rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::string< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
@@ -77,7 +64,59 @@ BOOST_AUTO_TEST_CASE( string32 ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( '\xdb' ) << karma::big_dword( vdata.size() ) << *karma::char_, vdata );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_0 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+
+BOOST_AUTO_TEST_CASE( v11_short_string ) {
+  std::string data( "Hello, World!" );
+  std::vector< char > vdata( data.begin(), data.end() );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::string< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( '\xa0' + data.size() ) << *karma::char_, data );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+
+BOOST_AUTO_TEST_CASE( v11_string8 ) {
+  std::vector< char > vdata( 200 );
+  std::fill( vdata.begin(), vdata.end(), 'a' );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::string< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( '\xd9' ) << karma::byte_( vdata.size() ) << *karma::char_, vdata );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+
+BOOST_AUTO_TEST_CASE( v11_string16 ) {
+  std::vector< char > vdata( 30000 );
+  std::fill( vdata.begin(), vdata.end(), 'a' );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::string< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( '\xda' ) << karma::big_word( vdata.size() ) << *karma::char_, vdata );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+
+BOOST_AUTO_TEST_CASE( v11_string32 ) {
+  std::vector< char > vdata( 65537 );
+  std::fill( vdata.begin(), vdata.end(), 'a' );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::string< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( '\xdb' ) << karma::big_dword( vdata.size() ) << *karma::char_, vdata );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 

@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE( float32 ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( 0xca ) << karma::big_bin_float, 1.234567f );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( float64 ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( 0xcb ) << karma::big_bin_double, 2.3456789 );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 

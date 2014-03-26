@@ -20,22 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include <vector>
-#include <boost/spirit/include/karma.hpp>
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MAIN
-#define BOOST_TEST_MODULE rapidmp_generate_none
-#include <boost/test/unit_test.hpp>
+#ifndef RAPIDMP_EXCEPTIONS_HPP
+#define RAPIDMP_EXCEPTIONS_HPP
 
+#include <rapidmp/config.hpp>
+#include <rapidmp/exceptions.hpp>
+#include <rapidmp/type.hpp>
+#include <rapidmp/parser.hpp>
 #include <rapidmp/generator.hpp>
 
-BOOST_AUTO_TEST_CASE( none ) {
-  rapidmp::none_type none;
-  rapidmp::object_type< std::vector< char >::const_iterator >::type source( none );
-  std::vector< char > expected{{ '\xc0' }};
-  std::vector< char > dest;
-  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
-  BOOST_CHECK( boost::equal( expected, dest ) );
-}
+#endif
 

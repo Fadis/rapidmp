@@ -29,13 +29,13 @@ int main( int argc, char *argv[] ) {
     std::vector< char > output;
     {
       auto iter = std::back_inserter( output );
-      rapidmp::generate_object( iter, data );
+      rapidmp::generate_object< rapidmp::version_1_1 >( iter, data );
     }
     const size_t repeat = args[ "repeat" ].as<size_t>();
     const auto begin_time = std::chrono::high_resolution_clock::now();
     for( size_t count = 0; count != repeat; ++count ) {
       auto iter = output.begin();
-      rapidmp::generate_object( iter, data );
+      rapidmp::generate_object< rapidmp::version_1_1 >( iter, data );
     }
     const auto end_time = std::chrono::high_resolution_clock::now();
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>( end_time - begin_time ).count() << "msec" << std::endl;

@@ -30,7 +30,7 @@ THE SOFTWARE.
 
 #include <rapidmp/generator.hpp>
 
-BOOST_AUTO_TEST_CASE( short_struct ) {
+BOOST_AUTO_TEST_CASE( v10_short_struct ) {
   typedef std::pair< uint8_t, float > pair;
   std::vector< pair > data{{ pair( 1, 2.0f ), pair( 3, 4.0f ), pair( 5, 6.0f ) }};
   std::vector< std::pair< rapidmp::object_type< std::vector< char >::const_iterator >::type, rapidmp::object_type< std::vector< char >::const_iterator >::type > > mparray;
@@ -46,11 +46,11 @@ BOOST_AUTO_TEST_CASE( short_struct ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( 0x83 ) << *( karma::byte_ << karma::byte_( 0xca ) << karma::big_bin_float ), data );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_0 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
-BOOST_AUTO_TEST_CASE( struct16 ) {
+BOOST_AUTO_TEST_CASE( v10_struct16 ) {
   typedef std::pair< uint8_t, float > pair;
   std::vector< pair > data( 30 );
   std::fill( data.begin(), data.end(), pair( 1, 2.0f ) );
@@ -67,11 +67,11 @@ BOOST_AUTO_TEST_CASE( struct16 ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( 0xde ) << karma::big_word( data.size() ) << *( karma::byte_ << karma::byte_( 0xca ) << karma::big_bin_float ), data );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_0 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
-BOOST_AUTO_TEST_CASE( struct32 ) {
+BOOST_AUTO_TEST_CASE( v10_struct32 ) {
   typedef std::pair< uint8_t, float > pair;
   std::vector< pair > data( 65537 );
   std::fill( data.begin(), data.end(), pair( 1, 2.0f ) );
@@ -88,6 +88,69 @@ BOOST_AUTO_TEST_CASE( struct32 ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( 0xdf ) << karma::big_dword( data.size() ) << *( karma::byte_ << karma::byte_( 0xca ) << karma::big_bin_float ), data );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_0 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
+
+BOOST_AUTO_TEST_CASE( v11_short_struct ) {
+  typedef std::pair< uint8_t, float > pair;
+  std::vector< pair > data{{ pair( 1, 2.0f ), pair( 3, 4.0f ), pair( 5, 6.0f ) }};
+  std::vector< std::pair< rapidmp::object_type< std::vector< char >::const_iterator >::type, rapidmp::object_type< std::vector< char >::const_iterator >::type > > mparray;
+  std::transform( data.begin(), data.end(), std::back_inserter( mparray ), []( const pair &value ) {
+    return std::make_pair(
+      rapidmp::object_type< std::vector< char >::const_iterator >::type( uint64_t( value.first ) ),
+      rapidmp::object_type< std::vector< char >::const_iterator >::type( value.second )
+    );
+  } );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( mparray );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( 0x83 ) << *( karma::byte_ << karma::byte_( 0xca ) << karma::big_bin_float ), data );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+
+BOOST_AUTO_TEST_CASE( v11_struct16 ) {
+  typedef std::pair< uint8_t, float > pair;
+  std::vector< pair > data( 30 );
+  std::fill( data.begin(), data.end(), pair( 1, 2.0f ) );
+  std::vector< std::pair< rapidmp::object_type< std::vector< char >::const_iterator >::type, rapidmp::object_type< std::vector< char >::const_iterator >::type > > mparray;
+  std::transform( data.begin(), data.end(), std::back_inserter( mparray ), []( const pair &value ) {
+    return std::make_pair(
+      rapidmp::object_type< std::vector< char >::const_iterator >::type( uint64_t( value.first ) ),
+      rapidmp::object_type< std::vector< char >::const_iterator >::type( value.second )
+    );
+  } );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( mparray );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( 0xde ) << karma::big_word( data.size() ) << *( karma::byte_ << karma::byte_( 0xca ) << karma::big_bin_float ), data );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+
+BOOST_AUTO_TEST_CASE( v11_struct32 ) {
+  typedef std::pair< uint8_t, float > pair;
+  std::vector< pair > data( 65537 );
+  std::fill( data.begin(), data.end(), pair( 1, 2.0f ) );
+  std::vector< std::pair< rapidmp::object_type< std::vector< char >::const_iterator >::type, rapidmp::object_type< std::vector< char >::const_iterator >::type > > mparray;
+  std::transform( data.begin(), data.end(), std::back_inserter( mparray ), []( const pair &value ) {
+    return std::make_pair(
+      rapidmp::object_type< std::vector< char >::const_iterator >::type( uint64_t( value.first ) ),
+      rapidmp::object_type< std::vector< char >::const_iterator >::type( value.second )
+    );
+  } );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( mparray );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( 0xdf ) << karma::big_dword( data.size() ) << *( karma::byte_ << karma::byte_( 0xca ) << karma::big_bin_float ), data );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+

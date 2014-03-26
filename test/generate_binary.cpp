@@ -29,7 +29,46 @@ THE SOFTWARE.
 
 #include <rapidmp/generator.hpp>
 
-BOOST_AUTO_TEST_CASE( binary8 ) {
+BOOST_AUTO_TEST_CASE( v10_short_binary ) {
+  std::vector< char > vdata( 10 );
+  std::fill( vdata.begin(), vdata.end(), 'a' );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::binary< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( '\xa0' + vdata.size() ) << *karma::char_, vdata );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_0 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+
+BOOST_AUTO_TEST_CASE( v10_binary16 ) {
+  std::vector< char > vdata( 30000 );
+  std::fill( vdata.begin(), vdata.end(), 'a' );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::binary< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( '\xda' ) << karma::big_word( vdata.size() ) << *karma::char_, vdata );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_0 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+
+BOOST_AUTO_TEST_CASE( v10_binary32 ) {
+  std::vector< char > vdata( 65537 );
+  std::fill( vdata.begin(), vdata.end(), 'a' );
+  rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::binary< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
+  std::vector< char > expected;
+  namespace karma = boost::spirit::karma;
+  karma::generate( std::back_inserter( expected ), karma::byte_( '\xdb' ) << karma::big_dword( vdata.size() ) << *karma::char_, vdata );
+  std::vector< char > dest;
+  std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
+  rapidmp::generate_object< rapidmp::version_1_0 >( oiter, source );
+  BOOST_CHECK( boost::equal( expected, dest ) );
+}
+
+BOOST_AUTO_TEST_CASE( v11_binary8 ) {
   std::vector< char > vdata( 200 );
   std::fill( vdata.begin(), vdata.end(), 'a' );
   rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::binary< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
@@ -38,11 +77,11 @@ BOOST_AUTO_TEST_CASE( binary8 ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( '\xc4' ) << karma::byte_( vdata.size() ) << *karma::char_, vdata );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
-BOOST_AUTO_TEST_CASE( binary16 ) {
+BOOST_AUTO_TEST_CASE( v11_binary16 ) {
   std::vector< char > vdata( 30000 );
   std::fill( vdata.begin(), vdata.end(), 'a' );
   rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::binary< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
@@ -51,11 +90,11 @@ BOOST_AUTO_TEST_CASE( binary16 ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( '\xc5' ) << karma::big_word( vdata.size() ) << *karma::char_, vdata );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
-BOOST_AUTO_TEST_CASE( binary32 ) {
+BOOST_AUTO_TEST_CASE( v11_binary32 ) {
   std::vector< char > vdata( 65537 );
   std::fill( vdata.begin(), vdata.end(), 'a' );
   rapidmp::object_type< std::vector< char >::const_iterator >::type source( rapidmp::binary< std::vector< char >::const_iterator >( vdata.cbegin(), vdata.cend() ) );
@@ -64,7 +103,7 @@ BOOST_AUTO_TEST_CASE( binary32 ) {
   karma::generate( std::back_inserter( expected ), karma::byte_( '\xc6' ) << karma::big_dword( vdata.size() ) << *karma::char_, vdata );
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 

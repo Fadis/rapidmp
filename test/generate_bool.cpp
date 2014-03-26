@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE( bool_true ) {
   std::vector< char > expected{{ '\xc3' }};
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE( bool_false ) {
   std::vector< char > expected{{ '\xc2' }};
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 

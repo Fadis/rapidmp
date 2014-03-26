@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( uint_short ) {
   std::vector< char > expected{{ '\x10' }};
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE( uint8 ) {
   std::vector< char > expected{{ '\xcc', '\xae' }};
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE( uint16 ) {
   std::vector< char > expected{{ '\xcd', '\xab', '\xcd' }};
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE( uint32 ) {
   std::vector< char > expected{{ '\xce', '\x12', '\x34', '\x56', '\x78' }};
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE( uint64 ) {
   std::vector< char > expected{{ '\xcf', '\x12', '\x34', '\x56', '\x78', '\x12', '\x34', '\x56', '\x78' }};
   std::vector< char > dest;
   std::back_insert_iterator< std::vector< char > > oiter = std::back_inserter( dest );
-  rapidmp::generate_object( oiter, source );
+  rapidmp::generate_object< rapidmp::version_1_1 >( oiter, source );
   BOOST_CHECK( boost::equal( expected, dest ) );
 }
 

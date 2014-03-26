@@ -32,6 +32,9 @@ THE SOFTWARE.
 #include <rapidmp/config.hpp>
 
 namespace rapidmp {
+  typedef boost::mpl::size_t< 1 > version_1_0;
+  typedef boost::mpl::size_t< 2 > version_1_1;
+
   struct none_type {
     bool operator==( const none_type& ) const { return true; }
     bool operator!=( const none_type& ) const { return false; }
