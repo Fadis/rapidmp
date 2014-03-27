@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE( struct_short ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0x83 ) << *( karma::byte_( 0xce ) << karma::big_dword << karma::byte_( 0xce ) << karma::big_dword ), boost::fusion::make_vector( data ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< typename rapidmp::struct_type< std::vector< char >::const_iterator >::type >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< typename rapidmp::struct_type< std::vector< char >::const_iterator >::type >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( parsed.size(), 3 );
   BOOST_CHECK_EQUAL( boost::get< uint64_t >( parsed[ 0 ].first ), data[ 0 ].first );
   BOOST_CHECK_EQUAL( boost::get< uint64_t >( parsed[ 0 ].second ), data[ 0 ].second );
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE( array16 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xde ) << karma::big_word << *( karma::byte_( 0xce ) << karma::big_dword << karma::byte_( 0xce ) << karma::big_dword ), boost::fusion::make_vector( data.size(), data ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< typename rapidmp::struct_type< std::vector< char >::const_iterator >::type >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< typename rapidmp::struct_type< std::vector< char >::const_iterator >::type >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( parsed.size(), 3 );
   BOOST_CHECK_EQUAL( boost::get< uint64_t >( parsed[ 0 ].first ), data[ 0 ].first );
   BOOST_CHECK_EQUAL( boost::get< uint64_t >( parsed[ 0 ].second ), data[ 0 ].second );
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE( array32 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xdf ) << karma::big_dword << *( karma::byte_( 0xce ) << karma::big_dword << karma::byte_( 0xce ) << karma::big_dword ), boost::fusion::make_vector( data.size(), data ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< typename rapidmp::struct_type< std::vector< char >::const_iterator >::type >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< typename rapidmp::struct_type< std::vector< char >::const_iterator >::type >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( parsed.size(), 3 );
   BOOST_CHECK_EQUAL( boost::get< uint64_t >( parsed[ 0 ].first ), data[ 0 ].first );
   BOOST_CHECK_EQUAL( boost::get< uint64_t >( parsed[ 0 ].second ), data[ 0 ].second );

@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE( float32 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::big_bin_float, 1.234567f );
   auto iter = source.cbegin();
-  BOOST_CHECK_EQUAL( boost::get< float >( rapidmp::parse_object( iter, source.cend() ) ), 1.234567f );
+  BOOST_CHECK_EQUAL( boost::get< float >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ), 1.234567f );
 }
 
 BOOST_AUTO_TEST_CASE( float64 ) {
@@ -44,6 +44,6 @@ BOOST_AUTO_TEST_CASE( float64 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::big_bin_double, 2.3456789 );
   auto iter = source.cbegin();
-  BOOST_CHECK_EQUAL( boost::get< double >( rapidmp::parse_object( iter, source.cend() ) ), 2.3456789 );
+  BOOST_CHECK_EQUAL( boost::get< double >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ), 2.3456789 );
 }
 

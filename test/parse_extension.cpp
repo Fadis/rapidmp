@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE( fixext1 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xd4 ) << karma::byte_ << *karma::char_, boost::fusion::make_vector( 14, message ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( uint8_t( 14 ), parsed.type );
   BOOST_CHECK( boost::equal( message, parsed.range ) );
 }
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( fixext2 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xd5 ) << karma::byte_ << *karma::char_, boost::fusion::make_vector( 14, message ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( uint8_t( 14 ), parsed.type );
   BOOST_CHECK( boost::equal( message, parsed.range ) );
 }
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE( fixext4 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xd6 ) << karma::byte_ << *karma::char_, boost::fusion::make_vector( 14, message ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( uint8_t( 14 ), parsed.type );
   BOOST_CHECK( boost::equal( message, parsed.range ) );
 }
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE( fixext8 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xd7 ) << karma::byte_ << *karma::char_, boost::fusion::make_vector( 14, message ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( uint8_t( 14 ), parsed.type );
   BOOST_CHECK( boost::equal( message, parsed.range ) );
 }
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE( fixext16 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xd8 ) << karma::byte_ << *karma::char_, boost::fusion::make_vector( 14, message ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( uint8_t( 14 ), parsed.type );
   BOOST_CHECK( boost::equal( message, parsed.range ) );
 }
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE( extension8 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xc7 ) << karma::byte_ << karma::byte_ << *karma::char_, boost::fusion::make_vector( message.size(), 14, message ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( uint8_t( 14 ), parsed.type );
   BOOST_CHECK( boost::equal( message, parsed.range ) );
 }
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE( extension16 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xc8 ) << karma::big_word << karma::byte_ << *karma::char_, boost::fusion::make_vector( message.size(), 14, message ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( uint8_t( 14 ), parsed.type );
   BOOST_CHECK( boost::equal( message, parsed.range ) );
 }
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE( extension32 ) {
   namespace karma = boost::spirit::karma;
   karma::generate( std::back_inserter( source ), karma::byte_( 0xc9 ) << karma::big_dword << karma::byte_ << *karma::char_, boost::fusion::make_vector( message.size(), 14, message ) );
   auto iter = source.cbegin();
-  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object( iter, source.cend() ) );
+  const auto parsed = boost::get< rapidmp::extension< std::vector< char >::const_iterator > >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) );
   BOOST_CHECK_EQUAL( uint8_t( 14 ), parsed.type );
   BOOST_CHECK( boost::equal( message, parsed.range ) );
 }

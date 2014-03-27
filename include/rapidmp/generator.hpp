@@ -143,7 +143,7 @@ namespace rapidmp {
   template< typename Version, typename InputIterator, typename OutputIterator >
   UMP_FUNCTION void generate_string(
     OutputIterator &output, const string< InputIterator > &value,
-    typename boost::enable_if< boost::mpl::equal_to< Version, boost::mpl::size_t< 1 > > >::type* = 0
+    typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version, version_mask >, version_1_0 > >::type* = 0
   ) {
     const size_t length = boost::distance( value.range );
     if( length < 32u ) {
@@ -167,7 +167,7 @@ namespace rapidmp {
   template< typename Version, typename InputIterator, typename OutputIterator >
   UMP_FUNCTION void generate_string(
     OutputIterator &output, const string< InputIterator > &value,
-    typename boost::enable_if< boost::mpl::greater_equal< Version, boost::mpl::size_t< 2 > > >::type* = 0
+    typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version, version_mask >, version_1_1 > >::type* = 0
   ) {
     const size_t length = boost::distance( value.range );
     if( length < 32u ) {
@@ -300,7 +300,10 @@ namespace rapidmp {
   class generate_object_visitor : public boost::static_visitor<void> {};
 
   template< typename Version, typename InputIterator, typename OutputIterator >
-  class generate_object_visitor< Version, InputIterator, OutputIterator, typename boost::enable_if< boost::mpl::equal_to< Version, boost::mpl::size_t< 1 > > >::type > : public boost::static_visitor<void> {
+  class generate_object_visitor<
+    Version, InputIterator, OutputIterator,
+    typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version, version_mask >, version_1_0 > >::type
+   > : public boost::static_visitor<void> {
   public:
     UMP_FUNCTION generate_object_visitor( OutputIterator &output_ ) : output( output_ ) {}
     UMP_FUNCTION void operator()( uint64_t value ) {
@@ -341,7 +344,10 @@ namespace rapidmp {
   };
 
   template< typename Version, typename InputIterator, typename OutputIterator >
-  class generate_object_visitor< Version, InputIterator, OutputIterator, typename boost::enable_if< boost::mpl::greater_equal< Version, boost::mpl::size_t< 2 > > >::type > : public boost::static_visitor<void> {
+  class generate_object_visitor<
+    Version, InputIterator, OutputIterator,
+    typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version, version_mask >, version_1_1 > >::type
+  > : public boost::static_visitor<void> {
   public:
     UMP_FUNCTION generate_object_visitor( OutputIterator &output_ ) : output( output_ ) {}
     UMP_FUNCTION void operator()( uint64_t value ) {

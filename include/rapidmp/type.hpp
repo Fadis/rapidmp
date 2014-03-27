@@ -32,8 +32,14 @@ THE SOFTWARE.
 #include <rapidmp/config.hpp>
 
 namespace rapidmp {
-  typedef boost::mpl::size_t< 1 > version_1_0;
-  typedef boost::mpl::size_t< 2 > version_1_1;
+  typedef boost::mpl::size_t< 0x10000 > version_1_0;
+  typedef boost::mpl::size_t< 0x10001 > version_1_0_raw_as_binary;
+  typedef boost::mpl::size_t< 0x10002 > version_1_0_raw_as_string;
+  typedef boost::mpl::size_t< 0x10100 > version_1_1;
+  typedef boost::mpl::size_t< 0xFFFF00 > version_mask;
+  typedef boost::mpl::size_t< 0xFF0000 > major_version_mask;
+  typedef boost::mpl::size_t< 0x00FF00 > minor_version_mask;
+  typedef boost::mpl::size_t< 0x0000FF > variant_mask;
 
   struct none_type {
     bool operator==( const none_type& ) const { return true; }

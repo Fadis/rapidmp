@@ -33,13 +33,13 @@ BOOST_AUTO_TEST_CASE( bool_true ) {
   std::vector< char > source;
   source.push_back( '\xc3' );
   auto iter = source.cbegin();
-  BOOST_CHECK_EQUAL( boost::get< bool >( rapidmp::parse_object( iter, source.cend() ) ), true );
+  BOOST_CHECK_EQUAL( boost::get< bool >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ), true );
 }
 
 BOOST_AUTO_TEST_CASE( bool_false ) {
   std::vector< char > source;
   source.push_back( '\xc2' );
   auto iter = source.cbegin();
-  BOOST_CHECK_EQUAL( boost::get< bool >( rapidmp::parse_object( iter, source.cend() ) ), false );
+  BOOST_CHECK_EQUAL( boost::get< bool >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ), false );
 }
 

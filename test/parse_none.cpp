@@ -33,6 +33,6 @@ BOOST_AUTO_TEST_CASE( none ) {
   std::vector< char > source;
   source.push_back( '\xc0' );
   auto iter = source.cbegin();
-  BOOST_CHECK( boost::get< rapidmp::none_type >( rapidmp::parse_object( iter, source.cend() ) ) == rapidmp::none_type() );
+  BOOST_CHECK( boost::get< rapidmp::none_type >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ) == rapidmp::none_type() );
 }
 

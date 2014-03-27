@@ -27,7 +27,7 @@ int main( int argc, char *argv[] ) {
     const auto begin_time = std::chrono::high_resolution_clock::now();
     for( size_t count = 0; count != repeat; ++count ) {
       auto iter = serialized.begin();
-      rapidmp::parse_object( iter, serialized.end() );
+      rapidmp::parse_object< rapidmp::version_1_1 >( iter, serialized.end() );
     }
     const auto end_time = std::chrono::high_resolution_clock::now();
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>( end_time - begin_time ).count() << "msec" << std::endl;

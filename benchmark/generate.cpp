@@ -25,7 +25,7 @@ int main( int argc, char *argv[] ) {
     std::fstream  file( args[ "input" ].as< std::string >(), std::ios::in|std::ios::binary );
     const std::vector< char > serialized( std::istreambuf_iterator< char >( file.rdbuf() ), std::istreambuf_iterator< char >() );
     auto iiter = serialized.begin();
-    const auto data = rapidmp::parse_object( iiter, serialized.end() );
+    const auto data = rapidmp::parse_object< rapidmp::version_1_1 >( iiter, serialized.end() );
     std::vector< char > output;
     {
       auto iter = std::back_inserter( output );

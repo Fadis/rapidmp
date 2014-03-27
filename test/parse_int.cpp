@@ -33,34 +33,34 @@ BOOST_AUTO_TEST_CASE( int_short ) {
   std::vector< char > source;
   source.push_back( -5 );
   auto iter = source.cbegin();
-  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object( iter, source.cend() ) ), -5ll );
+  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ), -5ll );
 }
 
 BOOST_AUTO_TEST_CASE( int8 ) {
   typedef rapidmp::object_type< std::vector< char >::const_iterator >::type mp;
   std::vector< char > source{{ '\xd0', -125 }};
   auto iter = source.cbegin();
-  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object( iter, source.cend() ) ), -125ll );
+  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ), -125ll );
 }
 
 BOOST_AUTO_TEST_CASE( int16 ) {
   typedef rapidmp::object_type< std::vector< char >::const_iterator >::type mp;
   std::vector< char > source{{ '\xd1', '\xff', -125 }};
   auto iter = source.cbegin();
-  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object( iter, source.cend() ) ), -125ll );
+  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ), -125ll );
 }
 
 BOOST_AUTO_TEST_CASE( int32 ) {
   typedef rapidmp::object_type< std::vector< char >::const_iterator >::type mp;
   std::vector< char > source{{ '\xd2', '\xff', '\xff', '\xff', -125 }};
   auto iter = source.cbegin();
-  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object( iter, source.cend() ) ), -125ll );
+  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ), -125ll );
 }
 
 BOOST_AUTO_TEST_CASE( int64 ) {
   typedef rapidmp::object_type< std::vector< char >::const_iterator >::type mp;
   std::vector< char > source{{ '\xd3', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', -125 }};
   auto iter = source.cbegin();
-  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object( iter, source.cend() ) ), -125ll );
+  BOOST_CHECK_EQUAL( boost::get< int64_t >( rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend() ) ), -125ll );
 }
 
