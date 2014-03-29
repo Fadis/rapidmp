@@ -27,7 +27,7 @@ THE SOFTWARE.
 #include <boost/range/algorithm/equal.hpp>
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MAIN
-#define BOOST_TEST_MODULE rapidmp_parser_array
+#define BOOST_TEST_MODULE rapidmp_parser
 #include <boost/test/unit_test.hpp>
 
 #include <rapidmp/parser.hpp>

@@ -25,7 +25,7 @@ THE SOFTWARE.
 #include <boost/fusion/adapted/std_pair.hpp>
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MAIN
-#define BOOST_TEST_MODULE rapidmp_generate_array
+#define BOOST_TEST_MODULE rapidmp_generate
 #include <boost/test/unit_test.hpp>
 
 #include <rapidmp/generator.hpp>

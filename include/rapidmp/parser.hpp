@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include <rapidmp/config.hpp> 
 #include <rapidmp/type.hpp>
 #include <rapidmp/exceptions.hpp>
+#include <rapidmp/convert_endian.hpp>
 
 namespace rapidmp {
   template< typename Version, typename Iterator >
@@ -108,63 +109,6 @@ namespace rapidmp {
     const auto strend = std::next( iter, size );
     iter = strend;
     return binary< Iterator >( strbegin, strend );
-  }
-
-  template< typename Length >
-  UMP_FUNCTION decltype( boost::spirit::qi::byte_ )
-  get_qi_rule_for_the_integer(
-    typename boost::enable_if< boost::mpl::equal_to< Length, boost::mpl::size_t< 1 > > >::type* = 0
-  ) {
-    return boost::spirit::qi::byte_;
-  }
-
-  template< typename Length >
-  UMP_FUNCTION decltype( boost::spirit::qi::big_word )
-  get_qi_rule_for_the_integer(
-    typename boost::enable_if< boost::mpl::equal_to< Length, boost::mpl::size_t< 2 > > >::type* = 0
-  ) {
-    return boost::spirit::qi::big_word;
-  }
-
-  template< typename Length >
-  UMP_FUNCTION decltype( boost::spirit::qi::big_dword )
-  get_qi_rule_for_the_integer(
-    typename boost::enable_if< boost::mpl::equal_to< Length, boost::mpl::size_t< 4 > > >::type* = 0
-  ) {
-    return boost::spirit::qi::big_dword;
-  }
-  
-  template< typename Length >
-  UMP_FUNCTION decltype( boost::spirit::qi::big_qword )
-  get_qi_rule_for_the_integer(
-    typename boost::enable_if< boost::mpl::equal_to< Length, boost::mpl::size_t< 8 > > >::type* = 0
-  ) {
-    return boost::spirit::qi::big_qword;
-  }
-
-  template< typename Length, typename Iterator >
-  UMP_FUNCTION uint8_t convert_endian(
-    Iterator &iter, const Iterator &end,
-    typename boost::enable_if< boost::mpl::equal_to< Length, boost::mpl::size_t< 1 > > >::type* = 0
-  ) {
-    if( iter == end )
-      throw unexpected_end();
-    uint8_t value = *iter;
-    ++iter;
-    return value;
-  }
-
-  template< typename Length, typename Iterator >
-  UMP_FUNCTION typename boost::uint_t< Length::value * 8u >::exact convert_endian(
-    Iterator &iter, const Iterator &end,
-    typename boost::enable_if< boost::mpl::not_equal_to< Length, boost::mpl::size_t< 1 > > >::type* = 0
-  ) {
-    namespace qi = boost::spirit::qi;
-    typename boost::uint_t< Length::value * 8u >::exact result;
-    static const auto rule = get_qi_rule_for_the_integer< Length >();
-    if( !qi::parse( iter, end, rule, result ) )
-      throw unexpected_end();
-    return result;
   }
 
   template< typename Length, typename Iterator >
