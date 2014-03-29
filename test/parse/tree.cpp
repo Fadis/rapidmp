@@ -30,7 +30,7 @@ THE SOFTWARE.
 #define BOOST_TEST_MODULE rapidmp_parser
 #include <boost/test/unit_test.hpp>
 
-#include <rapidmp/parser.hpp>
+#include <rapidmp/parser/tree.hpp>
 
 BOOST_AUTO_TEST_CASE( array_short ) {
   std::vector< char > source;

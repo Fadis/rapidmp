@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include <boost/program_options.hpp>
-#include <rapidmp/sax.hpp>
+#include <rapidmp/parser/event.hpp>
 #include <rapidmp/null_receiver.hpp>
 
 int main( int argc, char *argv[] ) {

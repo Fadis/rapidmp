@@ -1,9 +1,2 @@
-add_executable( benchmark_parse parse.cpp )
-target_link_libraries( benchmark_parse ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE} )
-set_target_properties( benchmark_parse PROPERTIES OUTPUT_NAME "parse" )
-add_executable( benchmark_sax sax.cpp )
-target_link_libraries( benchmark_sax ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE} )
-set_target_properties( benchmark_sax PROPERTIES OUTPUT_NAME "sax" )
-add_executable( benchmark_generate generate.cpp )
-target_link_libraries( benchmark_generate ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE} )
-set_target_properties( benchmark_generate PROPERTIES OUTPUT_NAME "generate" )
+subdirs( generate parse )
+

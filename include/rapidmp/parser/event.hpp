@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef RAPIDMP_SAX_HPP
-#define RAPIDMP_SAX_HPP
+#ifndef RAPIDMP_PARSER_TREE_HPP
+#define RAPIDMP_PARSER_TREE_HPP
 
 #include <cstdint>
 #include <boost/foreach.hpp>
@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include <rapidmp/type.hpp>
 #include <rapidmp/exceptions.hpp>
 #include <rapidmp/convert_endian.hpp>
-#include <rapidmp/parser.hpp>
+#include <rapidmp/parser/core.hpp>
 
 namespace rapidmp {
   template< typename Version, typename Iterator, typename Receiver >

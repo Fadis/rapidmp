@@ -26,8 +26,10 @@ THE SOFTWARE.
 #include <rapidmp/config.hpp>
 #include <rapidmp/exceptions.hpp>
 #include <rapidmp/type.hpp>
-#include <rapidmp/parser.hpp>
-#include <rapidmp/generator.hpp>
+#include <rapidmp/parser/core.hpp>
+#include <rapidmp/parser/event.hpp>
+#include <rapidmp/parser/tree.hpp>
+#include <rapidmp/generator/generator.hpp>
 
 #endif
 

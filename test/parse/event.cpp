@@ -30,7 +30,7 @@ THE SOFTWARE.
 #define BOOST_TEST_MODULE rapidmp_sax
 #include <boost/test/unit_test.hpp>
 
-#include <rapidmp/sax.hpp>
+#include <rapidmp/parser/event.hpp>
 #include <rapidmp/debug_receiver.hpp>
 
 BOOST_AUTO_TEST_CASE( array_short ) {
