@@ -21,12 +21,19 @@ set(CMAKE_C_FLAGS_RELEASE "-W -Wall -Wextra -Wno-array-bounds -Werror -O3")
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.49.0 COMPONENTS program_options unit_test_framework REQUIRED )
+find_package(Boost 1.49.0 COMPONENTS python program_options unit_test_framework REQUIRED )
 if (NOT Boost_FOUND)
   message(SEND_ERROR "Required package Boost is not exist.")
 endif (NOT Boost_FOUND)
 
-INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR}/include ${Boost_INCLUDE_DIRS} )
+find_package(PythonLibs REQUIRED )
+
+if (NOT PYTHONLIBS_FOUND )
+  INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR}/include ${Boost_INCLUDE_DIRS} )
+else()
+  INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR}/include ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} )
+endif()
+
 link_directories( ${Boost_LIBRARY_DIRS} )
 subdirs( include test benchmark )
 
