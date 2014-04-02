@@ -72,7 +72,7 @@ namespace rapidmp {
         throw unexpected_end();
       dict[ key ] = parse_object< Version >( iter, end );
     }
-    return boost::python::object( dict );
+    return boost::python::object( std::move( dict ) );
   }
 
   template< typename Version, typename Iterator >
@@ -84,7 +84,7 @@ namespace rapidmp {
         throw unexpected_end();
       list.append( parse_object< Version >( iter, end ) );
     }
-    return boost::python::object( list );
+    return boost::python::object( std::move( list ) );
   }
   
   template< typename Version, typename Length, typename Iterator >
@@ -96,7 +96,7 @@ namespace rapidmp {
         throw unexpected_end();
       list.append( parse_object< Version >( iter, end ) );
     }
-    return boost::python::object( list );
+    return boost::python::object( std::move( list ) );
   }
 
   template< typename Version, typename Length, typename Iterator >
@@ -111,7 +111,7 @@ namespace rapidmp {
         throw unexpected_end();
       dict[ key ] = parse_object< Version >( iter, end );
     }
-    return boost::python::object( dict );
+    return boost::python::object( std::move( dict ) );
   }
 
   template< typename Iterator >
@@ -362,9 +362,9 @@ namespace rapidmp {
     }
     else if( head < 0xc0u ) {
       if( head < 0x90u )
-        return  parse_short_struct< Version >( head, iter, end );
+        return std::move( parse_short_struct< Version >( head, iter, end ) );
       else if( head < 0xa0u )
-        return parse_short_array< Version >( head, iter, end );
+        return std::move( parse_short_array< Version >( head, iter, end ) );
       else
         return rapidmp2python( parse_short_string( head, iter, end ) );
     }
@@ -425,13 +425,13 @@ namespace rapidmp {
         case 0xdbu:
           return rapidmp2python( parse_str< boost::mpl::size_t< 4 >, Iterator >( iter, end ) );
         case 0xdcu:
-          return  parse_array< Version, boost::mpl::size_t< 2 >, Iterator >( iter, end );
+          return std::move(  parse_array< Version, boost::mpl::size_t< 2 >, Iterator >( iter, end ) );
         case 0xddu:
-          return  parse_array< Version, boost::mpl::size_t< 4 >, Iterator >( iter, end );
+          return std::move( parse_array< Version, boost::mpl::size_t< 4 >, Iterator >( iter, end ) );
         case 0xdeu:
-          return  parse_struct< Version, boost::mpl::size_t< 2 >, Iterator >( iter, end );
+          return std::move( parse_struct< Version, boost::mpl::size_t< 2 >, Iterator >( iter, end ) );
         case 0xdfu:
-          return  parse_struct< Version, boost::mpl::size_t< 4 >, Iterator >( iter, end );
+          return std::move( parse_struct< Version, boost::mpl::size_t< 4 >, Iterator >( iter, end ) );
         default:
           throw invalid_object();
       };

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <boost/program_options.hpp>
 #include <rapidmp/parser/tree.hpp>
-#include <rapidmp/generator/generator.hpp>
+#include <rapidmp/generator/tree.hpp>
 
 int main( int argc, char *argv[] ) {
   namespace po = boost::program_options;

@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef RAPIDMP_GENERATOR_GENERATOR_HPP
-#define RAPIDMP_GENERATOR_GENERATOR_HPP
+#ifndef RAPIDMP_GENERATOR_CORE_HPP
+#define RAPIDMP_GENERATOR_CORE_HPP
 
 #include <cstdint>
 #include <algorithm>
@@ -141,7 +141,7 @@ namespace rapidmp {
   }
 
   template< typename Version, typename InputIterator, typename OutputIterator >
-  UMP_FUNCTION void generate_string(
+  UMP_FUNCTION void generate_str(
     OutputIterator &output, const string< InputIterator > &value,
     typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version, version_mask >, version_1_0 > >::type* = 0
   ) {
@@ -165,7 +165,7 @@ namespace rapidmp {
   }
 
   template< typename Version, typename InputIterator, typename OutputIterator >
-  UMP_FUNCTION void generate_string(
+  UMP_FUNCTION void generate_str(
     OutputIterator &output, const string< InputIterator > &value,
     typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version, version_mask >, version_1_1 > >::type* = 0
   ) {
@@ -195,7 +195,7 @@ namespace rapidmp {
 
 
   template< typename InputIterator, typename OutputIterator >
-  UMP_FUNCTION void generate_binary( OutputIterator &output, const binary< InputIterator > &value ) {
+  UMP_FUNCTION void generate_bin( OutputIterator &output, const binary< InputIterator > &value ) {
     const size_t length = boost::distance( value.range );
     if( length < 0x100u ) {
       *output = '\xc4';
@@ -217,7 +217,7 @@ namespace rapidmp {
   }
 
   template< typename InputIterator, typename OutputIterator >
-  UMP_FUNCTION void generate_extension( OutputIterator &output, const extension< InputIterator > &value ) {
+  UMP_FUNCTION void generate_ext( OutputIterator &output, const extension< InputIterator > &value ) {
     const size_t length = boost::distance( value.range );
     if( length == 1 ) {
       *output = '\xd4';
@@ -259,14 +259,8 @@ namespace rapidmp {
     std::copy( boost::begin( value.range ), boost::end( value.range ), output );
   }
 
-  template< typename InputIterator, typename OutputIterator >
-  UMP_FUNCTION void generate_array( OutputIterator &output, const typename array_type< InputIterator >::type &value );
-
-  template< typename InputIterator, typename OutputIterator >
-  UMP_FUNCTION void generate_struct( OutputIterator &output, const typename struct_type< InputIterator >::type &value );
-
   template< typename OutputIterator >
-  UMP_FUNCTION void generate_float32( OutputIterator &output, float value ) {
+  UMP_FUNCTION void generate_float( OutputIterator &output, float value ) {
     *output = '\xca';
     ++output;
     namespace karma = boost::spirit::karma;
@@ -275,7 +269,7 @@ namespace rapidmp {
   }
 
   template< typename OutputIterator >
-  UMP_FUNCTION void generate_float64( OutputIterator &output, double value ) {
+  UMP_FUNCTION void generate_float( OutputIterator &output, double value ) {
     *output = '\xcb';
     ++output;
     namespace karma = boost::spirit::karma;
@@ -293,157 +287,6 @@ namespace rapidmp {
   UMP_FUNCTION void generate_bool( OutputIterator &output, bool value ) {
     *output = value ? '\xc3' : '\xc2';
     ++output;
-  }
-
-
-  template< typename Version, typename InputIterator, typename OutputIterator, typename Enable = void >
-  class generate_object_visitor : public boost::static_visitor<void> {};
-
-  template< typename Version, typename InputIterator, typename OutputIterator >
-  class generate_object_visitor<
-    Version, InputIterator, OutputIterator,
-    typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version, version_mask >, version_1_0 > >::type
-   > : public boost::static_visitor<void> {
-  public:
-    UMP_FUNCTION generate_object_visitor( OutputIterator &output_ ) : output( output_ ) {}
-    UMP_FUNCTION void operator()( uint64_t value ) {
-      generate_uint( output, value );
-    }
-    UMP_FUNCTION void operator()( int64_t value ) {
-      generate_int( output, value );
-    }
-    UMP_FUNCTION void operator()( float value ) {
-      generate_float32( output, value );
-    }
-    UMP_FUNCTION void operator()( double value ) {
-      generate_float64( output, value );
-    }
-    UMP_FUNCTION void operator()( const none_type & ) {
-      generate_none( output );
-    }
-    UMP_FUNCTION void operator()( bool value ) {
-      generate_bool( output, value );
-    }
-    UMP_FUNCTION void operator()( const string< InputIterator > &value ) {
-      generate_string< Version >( output, value );
-    }
-    UMP_FUNCTION void operator()( const binary< InputIterator > &value ) {
-      generate_string< Version >( output, string< InputIterator >( boost::begin( value.range ), boost::end( value.range ) ) );
-    }
-    UMP_FUNCTION void operator()( const extension< InputIterator > & ) {
-      throw not_supported();
-    }
-    UMP_FUNCTION void operator()( const typename array_type< InputIterator >::type &value ) {
-      generate_array< Version, InputIterator, OutputIterator >( output, value );
-    }
-    UMP_FUNCTION void operator()( const typename struct_type< InputIterator >::type &value ) {
-      generate_struct< Version, InputIterator, OutputIterator >( output, value );
-    }
-  private:
-    OutputIterator &output;
-  };
-
-  template< typename Version, typename InputIterator, typename OutputIterator >
-  class generate_object_visitor<
-    Version, InputIterator, OutputIterator,
-    typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version, version_mask >, version_1_1 > >::type
-  > : public boost::static_visitor<void> {
-  public:
-    UMP_FUNCTION generate_object_visitor( OutputIterator &output_ ) : output( output_ ) {}
-    UMP_FUNCTION void operator()( uint64_t value ) {
-      generate_uint( output, value );
-    }
-    UMP_FUNCTION void operator()( int64_t value ) {
-      generate_int( output, value );
-    }
-    UMP_FUNCTION void operator()( float value ) {
-      generate_float32( output, value );
-    }
-    UMP_FUNCTION void operator()( double value ) {
-      generate_float64( output, value );
-    }
-    UMP_FUNCTION void operator()( const none_type & ) {
-      generate_none( output );
-    }
-    UMP_FUNCTION void operator()( bool value ) {
-      generate_bool( output, value );
-    }
-    UMP_FUNCTION void operator()( const string< InputIterator > &value ) {
-      generate_string< Version >( output, value );
-    }
-    UMP_FUNCTION void operator()( const binary< InputIterator > &value ) {
-      generate_binary( output, value );
-    }
-    UMP_FUNCTION void operator()( const extension< InputIterator > &value ) {
-      generate_extension( output, value );
-    }
-    UMP_FUNCTION void operator()( const typename array_type< InputIterator >::type &value ) {
-      generate_array< Version, InputIterator, OutputIterator >( output, value );
-    }
-    UMP_FUNCTION void operator()( const typename struct_type< InputIterator >::type &value ) {
-      generate_struct< Version, InputIterator, OutputIterator >( output, value );
-    }
-  private:
-    OutputIterator &output;
-  };
-
-  template< typename ObjectType >
-  struct get_input_iterator {
-    typedef typename boost::mpl::at_c< typename ObjectType::types, 7 >::type::range_type::iterator type;
-  };
-  
-  template< typename Version, typename ObjectType, typename OutputIterator >
-  UMP_FUNCTION void generate_object( OutputIterator &output, const ObjectType &value ) {
-    generate_object_visitor< Version, typename get_input_iterator< ObjectType >::type, OutputIterator > generator( output );
-    apply_visitor( generator, value );
-  }
-
-  template< typename Version, typename InputIterator, typename OutputIterator >
-  UMP_FUNCTION void generate_array( OutputIterator &output, const typename array_type< InputIterator >::type &value ) {
-    const size_t length = boost::distance( value );
-    if( length < 16u ) {
-      *output = '\x90' + length;
-      ++output;
-    }
-    else if( length < 0x10000u ) {
-      *output = '\xdc';
-      ++output;
-      generate_uint_in_the_length< boost::mpl::size_t< 2 > >( output, length );
-    }
-    else if( length < 0x100000000u ) {
-      *output = '\xdd';
-      ++output;
-      generate_uint_in_the_length< boost::mpl::size_t< 4 > >( output, length );
-    }
-    else throw too_big();
-    generate_object_visitor< Version, InputIterator, OutputIterator > generator( output );
-    BOOST_FOREACH( const auto &elem, value )
-      apply_visitor( generator, elem );
-  }
-
-  template< typename Version, typename InputIterator, typename OutputIterator >
-  UMP_FUNCTION void generate_struct( OutputIterator &output, const typename struct_type< InputIterator >::type &value ) {
-    const size_t length = boost::distance( value );
-    if( length < 16u ) {
-      *output = '\x80' + length;
-      ++output;
-    }
-    else if( length < 0x10000u ) {
-      *output = '\xde';
-      ++output;
-      generate_uint_in_the_length< boost::mpl::size_t< 2 > >( output, length );
-    }
-    else if( length < 0x100000000u ) {
-      *output = '\xdf';
-      ++output;
-      generate_uint_in_the_length< boost::mpl::size_t< 4 > >( output, length );
-    }
-    else throw too_big();
-    generate_object_visitor< Version, InputIterator, OutputIterator > generator( output );
-    BOOST_FOREACH( const auto &elem, value ) {
-      apply_visitor( generator, elem.first );
-      apply_visitor( generator, elem.second );
-    }
   }
 }
 

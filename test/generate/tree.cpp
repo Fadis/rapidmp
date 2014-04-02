@@ -28,7 +28,7 @@ THE SOFTWARE.
 #define BOOST_TEST_MODULE rapidmp_generate
 #include <boost/test/unit_test.hpp>
 
-#include <rapidmp/generator/generator.hpp>
+#include <rapidmp/generator/tree.hpp>
 
 BOOST_AUTO_TEST_CASE( v10_short_array ) {
   std::vector< uint32_t > data{{ 467832, 672348, 14078901 }};
