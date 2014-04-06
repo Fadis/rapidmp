@@ -39,10 +39,6 @@ namespace rapidmp {
     }
     UMP_FUNCTION void end_array() {
     }
-    UMP_FUNCTION void begin_pair() {
-    }
-    UMP_FUNCTION void end_pair() {
-    }
     UMP_FUNCTION void begin_struct( size_t size ) {
       generator_.begin_struct( size );
     }
@@ -59,9 +55,6 @@ namespace rapidmp {
     }
     UMP_FUNCTION void operator()( double value ) {
       generator_( value );
-    }
-    UMP_FUNCTION void operator()( const none_type& ) {
-      generator_();
     }
     UMP_FUNCTION void operator()() {
       generator_();

@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE( struct_short ) {
   auto iter = source.cbegin();
   rapidmp::debug_receiver< std::vector< char >::const_iterator > receiver;
   rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend(), receiver );
-  BOOST_CHECK_EQUAL( receiver.get_log(), std::string( "{(uu)(uu)(uu)}" ) );
+  BOOST_CHECK_EQUAL( receiver.get_log(), std::string( "{uuuuuu}" ) );
 }
 
 BOOST_AUTO_TEST_CASE( struct16 ) {
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE( struct16 ) {
   auto iter = source.cbegin();
   rapidmp::debug_receiver< std::vector< char >::const_iterator > receiver;
   rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend(), receiver );
-  BOOST_CHECK_EQUAL( receiver.get_log(), std::string( "{(uu)(uu)(uu)}" ) );
+  BOOST_CHECK_EQUAL( receiver.get_log(), std::string( "{uuuuuu}" ) );
 }
 
 BOOST_AUTO_TEST_CASE( struct32 ) {
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE( struct32 ) {
   auto iter = source.cbegin();
   rapidmp::debug_receiver< std::vector< char >::const_iterator > receiver;
   rapidmp::parse_object< rapidmp::version_1_1 >( iter, source.cend(), receiver );
-  BOOST_CHECK_EQUAL( receiver.get_log(), std::string( "{(uu)(uu)(uu)}" ) );
+  BOOST_CHECK_EQUAL( receiver.get_log(), std::string( "{uuuuuu}" ) );
 }
 
 

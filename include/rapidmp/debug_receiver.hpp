@@ -38,12 +38,6 @@ namespace rapidmp {
     UMP_FUNCTION void end_array() {
       log.push_back( ']' );
     }
-    UMP_FUNCTION void begin_pair() {
-      log.push_back( '(' );
-    }
-    UMP_FUNCTION void end_pair() {
-      log.push_back( ')' );
-    }
     UMP_FUNCTION void begin_struct( size_t ) {
       log.push_back( '{' );
     }
@@ -62,7 +56,7 @@ namespace rapidmp {
     UMP_FUNCTION void operator()( double ) {
       log.push_back( 'd' );
     }
-    UMP_FUNCTION void operator()( none_type ) {
+    UMP_FUNCTION void operator()() {
       log.push_back( 'n' );
     }
     UMP_FUNCTION void operator()( bool ) {

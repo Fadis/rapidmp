@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef RAPIDMP_GENERATOR_TREE_HPP
-#define RAPIDMP_GENERATOR_TREE_HPP
+#ifndef RAPIDMP_GENERATOR_EVENT_HPP
+#define RAPIDMP_GENERATOR_EVENT_HPP
 
 #include <cstdint>
 #include <algorithm>
@@ -154,7 +154,8 @@ namespace rapidmp {
       left.push( length );
       post_event();
     }
-
+    UMP_FUNCTION void end_array() {
+    }
     UMP_FUNCTION void begin_struct( size_t length ) {
       pre_event();
       if( length < 16u ) {
@@ -175,7 +176,8 @@ namespace rapidmp {
       left.push( length * 2 );
       post_event();
     }
- 
+    UMP_FUNCTION void end_struct() {
+    }
   private:
     void pre_event() {
       if( left.top() == 0u )

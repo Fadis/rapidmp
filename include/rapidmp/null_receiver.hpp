@@ -34,15 +34,13 @@ namespace rapidmp {
   public:
     UMP_FUNCTION void begin_array( size_t ) {}
     UMP_FUNCTION void end_array() {}
-    UMP_FUNCTION void begin_pair() {}
-    UMP_FUNCTION void end_pair() {}
     UMP_FUNCTION void begin_struct( size_t ) {}
     UMP_FUNCTION void end_struct() {}
     UMP_FUNCTION void operator()( uint64_t ) {}
     UMP_FUNCTION void operator()( int64_t ) {}
     UMP_FUNCTION void operator()( float ) {}
     UMP_FUNCTION void operator()( double ) {}
-    UMP_FUNCTION void operator()( none_type ) {}
+    UMP_FUNCTION void operator()() {}
     UMP_FUNCTION void operator()( bool ) {}
     UMP_FUNCTION void operator()( string< Iterator >&& ) {}
     UMP_FUNCTION void operator()( binary< Iterator >&& ) {}

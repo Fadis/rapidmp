@@ -68,12 +68,10 @@ namespace rapidmp {
     for( size_t index = 0u; index != size; ++index ) {
       if( iter == end )
         throw unexpected_end();
-      receiver.begin_pair();
       parse_object< Version >( iter, end, receiver );
       if( iter == end )
         throw unexpected_end();
       parse_object< Version >( iter, end, receiver );
-      receiver.end_pair();
     }
     receiver.end_struct();
   }
@@ -109,12 +107,10 @@ namespace rapidmp {
     for( size_t index = 0u; index != size; ++index ) {
       if( iter == end )
         throw unexpected_end();
-      receiver.begin_pair();
       parse_object< Version >( iter, end, receiver );
       if( iter == end )
         throw unexpected_end();
       parse_object< Version >( iter, end, receiver );
-      receiver.end_pair();
     }
     receiver.end_struct();
   }
@@ -149,7 +145,7 @@ namespace rapidmp {
     else if( head < 0xe0u ) {
       switch( head ) {
         case 0xc0u:
-          receiver( none );
+          receiver();
           return;
         case 0xc2u:
           receiver( false );
@@ -338,7 +334,7 @@ namespace rapidmp {
     else if( head < 0xe0u ) {
       switch( head ) {
         case 0xc0u:
-          receiver( none );
+          receiver();
           return;
         case 0xc2u:
           receiver( false );
