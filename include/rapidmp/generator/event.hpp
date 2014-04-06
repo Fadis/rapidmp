@@ -26,6 +26,8 @@ THE SOFTWARE.
 #include <cstdint>
 #include <algorithm>
 #include <stack>
+#include <boost/utility/enable_if.hpp>
+#include <boost/type_traits.hpp>
 
 #include <rapidmp/config.hpp>
 #include <rapidmp/type.hpp>
@@ -56,7 +58,7 @@ namespace rapidmp {
     }
     template< typename T >
     UMP_FUNCTION void operator()(
-      OutputIterator &output, const T &value,
+      const T &value,
       typename boost::enable_if<
         boost::mpl::and_<
           boost::is_integral< T >,
@@ -69,28 +71,26 @@ namespace rapidmp {
       post_event();
     }
     UMP_FUNCTION void operator()(
-      OutputIterator &output,  float value
+      float value
     ) {
       pre_event();
       generate_float( output, value );
       post_event();
     }
     UMP_FUNCTION void operator()(
-      OutputIterator &output,  double value
+      double value
     ) {
       pre_event();
       generate_float( output, value );
       post_event();
     }
-    UMP_FUNCTION void operator()(
-      OutputIterator &output
-    ) {
+    UMP_FUNCTION void operator()() {
       pre_event();
       generate_none( output );
       post_event();
     }
     UMP_FUNCTION void operator()(
-      OutputIterator &output, bool value
+      bool value
     ) {
       pre_event();
       generate_bool( output, value );
@@ -98,7 +98,7 @@ namespace rapidmp {
     }
     template< typename InputIterator >
     UMP_FUNCTION void operator()(
-      OutputIterator &output, const string< InputIterator > &value
+      const string< InputIterator > &value
     ) {
       pre_event();
       generate_str< Version >( output, value );
@@ -107,16 +107,16 @@ namespace rapidmp {
  
     template< typename InputIterator, typename Version_ = Version >
     UMP_FUNCTION void operator()(
-      OutputIterator &output, const binary< InputIterator > &value,
+      const binary< InputIterator > &value,
       typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version_, version_mask >, version_1_0 > >::type* = 0
     ) {
       pre_event();
-      generate_str< Version >( output, value );
+      generate_str< Version >( output, string< InputIterator >( boost::begin( value.range ), boost::end( value.range ) ) );
       post_event();
     }
     template< typename InputIterator, typename Version_ = Version >
     UMP_FUNCTION void operator()(
-      OutputIterator &output, const binary< InputIterator > &value,
+      const binary< InputIterator > &value,
       typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version_, version_mask >, version_1_1 > >::type* = 0
     ) {
       pre_event();
@@ -126,7 +126,7 @@ namespace rapidmp {
  
     template< typename InputIterator, typename Version_ = Version >
     UMP_FUNCTION void operator()(
-      OutputIterator &output, const extension< InputIterator > &value,
+      const extension< InputIterator > &value,
       typename boost::enable_if< boost::mpl::equal_to< boost::mpl::bitand_< Version_, version_mask >, version_1_1 > >::type* = 0
     ) {
       pre_event();
@@ -134,7 +134,7 @@ namespace rapidmp {
       post_event();
     }
 
-    UMP_FUNCTION void begin_array( OutputIterator &output, size_t length ) {
+    UMP_FUNCTION void begin_array( size_t length ) {
       pre_event();
       if( length < 16u ) {
         *output = '\x90' + length;
@@ -155,7 +155,7 @@ namespace rapidmp {
       post_event();
     }
 
-    UMP_FUNCTION void begin_struct( OutputIterator&, size_t length ) {
+    UMP_FUNCTION void begin_struct( size_t length ) {
       pre_event();
       if( length < 16u ) {
         *output = '\x80' + length;
